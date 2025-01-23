@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import Textarea from 'react-textarea-autosize'
 import { EmptyScreen } from './empty-screen'
-import { ModelSelector } from './model-selector'
 import { Button } from './ui/button'
 
 interface ChatPanelProps {
@@ -95,7 +94,7 @@ export function ChatPanel({
               <Plus className="size-4 group-hover:rotate-90 transition-all" />
             </Button>
           )}
-          {messages.length === 0 && <ModelSelector />}
+          {/* {messages.length === 0 && <ModelSelector />} */}
           <Textarea
             ref={inputRef}
             name="input"

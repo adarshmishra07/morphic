@@ -1,31 +1,28 @@
-import { anthropic } from '@ai-sdk/anthropic'
-import { createAzure } from '@ai-sdk/azure'
-import { deepseek } from '@ai-sdk/deepseek'
-import { google } from '@ai-sdk/google'
-import { createOpenAI, openai } from '@ai-sdk/openai'
+import { createDeepSeek, deepseek } from '@ai-sdk/deepseek'
+import { openai } from '@ai-sdk/openai'
 import { experimental_createProviderRegistry as createProviderRegistry } from 'ai'
 import { createOllama } from 'ollama-ai-provider'
 
 export const registry = createProviderRegistry({
   openai,
-  anthropic,
-  google,
-  groq: createOpenAI({
-    apiKey: process.env.GROQ_API_KEY,
-    baseURL: 'https://api.groq.com/openai/v1'
-  }),
-  ollama: createOllama({
-    baseURL: `${process.env.OLLAMA_BASE_URL}/api`
-  }),
-  azure: createAzure({
-    apiKey: process.env.AZURE_API_KEY,
-    resourceName: process.env.AZURE_RESOURCE_NAME
-  }),
-  deepseek,
-  'openai-compatible': createOpenAI({
-    apiKey: process.env.OPENAI_COMPATIBLE_API_KEY,
-    baseURL: process.env.OPENAI_COMPATIBLE_API_BASE_URL
-  })
+  // anthropic,
+  // google,
+  // groq: createOpenAI({
+  //   apiKey: process.env.GROQ_API_KEY,
+  //   baseURL: 'https://api.groq.com/openai/v1'
+  // }),
+  // ollama: createOllama({
+  //   baseURL: `${process.env.OLLAMA_BASE_URL}/api`
+  // }),
+  // azure: createAzure({
+  //   apiKey: process.env.AZURE_API_KEY,
+  //   resourceName: process.env.AZURE_RESOURCE_NAME
+  // }),
+  deepseek
+  // 'openai-compatible': createOpenAI({
+  //   apiKey: process.env.OPENAI_COMPATIBLE_API_KEY,
+  //   baseURL: process.env.OPENAI_COMPATIBLE_API_BASE_URL
+  // })
 })
 
 export function getModel(model: string) {
@@ -38,6 +35,14 @@ export function getModel(model: string) {
     return ollama(modelName, {
       simulateStreaming: true
     })
+  }
+
+  if (model.includes('deepseek')) {
+    const deepseek = createDeepSeek({
+      apiKey: process.env.DEEPSEEK_API_KEY,
+      baseURL: 'https://api.deepseek.com/'
+    })
+    return deepseek(model.split(':')[1])
   }
 
   return registry.languageModel(model)

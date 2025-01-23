@@ -14,7 +14,7 @@ import { cookies } from 'next/headers'
 
 export const maxDuration = 30
 
-const DEFAULT_MODEL = 'openai:gpt-4o-mini'
+const DEFAULT_MODEL = 'deepseek:deepseek-reasoner'
 
 export async function POST(req: Request) {
   try {
@@ -77,7 +77,7 @@ export async function POST(req: Request) {
                 // Generate related questions
                 const relatedQuestions = await generateRelatedQuestions(
                   responseMessages,
-                  model
+                  'openai:gpt-4o-mini'
                 )
 
                 // Update the annotation with the related questions
